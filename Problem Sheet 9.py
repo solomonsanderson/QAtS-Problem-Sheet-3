@@ -12,9 +12,21 @@ from scipy import constants
 
 # Defining Constants
 k_B = constants.Boltzmann
+N = 1
 
 def integrand(x):
-    (x ** 4 * np.exp(x)) / ((np.exp(x) - 1) ** 2)
+    ''' 
+    Parameters: 
+    
+    - x: int, value to be integrated
+
+    Returns: 
+
+    - 
+
+    '''
+    integral = (x ** 4 * np.exp(x)) / ((np.exp(x) - 1) ** 2)
+    return integral
 
 
 def debye_heat_capacity(Theta_D, T):
@@ -28,11 +40,33 @@ def debye_heat_capacity(Theta_D, T):
 
     Returns:
     
-    - C_v: float, Debye heat capacity
+    - C_vs: array, Debye heat capacity values
     '''
+    C_vs = []
+    for t in T:
+        integral, error = integrate.quad(integrand, 0, Theta_D / t)
 
+        C_v = 9 * N * k_B * (t / Theta_D) ** 3 * integral
+        C_vs.append(C_v)
 
-    integral = integrate.quad(integrand(x), 0, Theta_D / T)
-    C_v = 9 * N * k_B * (T / Theta_D) ** 3
-    
-    return C_v
+    C_vs = np.array(C_vs)
+
+    return C_vs
+
+temps = np.linspace(0.1, 300, 1000)
+debye_temperature1 = 50
+C_v1 = debye_heat_capacity(debye_temperature1, temps)
+debye_temperature2 = 750
+C_v2 = debye_heat_capacity(debye_temperature2, temps)
+
+# Plotting Graph
+fig, ax = plt.subplots(1,1, figsize = (12,9))
+ax.plot(temps, C_v1, label="$\Theta_D = 50$ K")
+ax.plot(temps, C_v2, label="$\Theta_D = 750$ K")
+ax.plot(temps, np.ones(1000) * 3 * N * k_B, label="Dulong Petit Heat Capacity", linestyle="--")
+ax.set_title("Plot of Debye Heat Capacity vs. Temperature")
+ax.set_xlabel(" Temperature (K)")
+ax.set_ylabel("Debye Heat Capacity (JK$^{-1}$)")
+ax.legend()
+
+plt.show()
