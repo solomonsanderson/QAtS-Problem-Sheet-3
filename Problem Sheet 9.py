@@ -18,11 +18,11 @@ def integrand(x):
     ''' 
     Parameters: 
     
-    - x: int, value to be integrated
+    - x: float, value to be integrated
 
     Returns: 
 
-    - 
+    - integral: float, output of integration
 
     '''
     integral = (x ** 4 * np.exp(x)) / ((np.exp(x) - 1) ** 2)
