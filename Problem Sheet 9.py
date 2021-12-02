@@ -69,4 +69,18 @@ ax.set_xlabel(" Temperature (K)")
 ax.set_ylabel("Debye Heat Capacity (JK$^{-1}$)")
 ax.legend()
 
+# Extension
+temps_ext = np.linspace(0.1, 50, 500)
+C_v1 = debye_heat_capacity(debye_temperature1, temps_ext)
+C_v2 = debye_heat_capacity(debye_temperature2, temps_ext)
+
+
+fig2, ax2 = plt.subplots(1,1, figsize = (12,9))
+ax2.plot(temps_ext ** 2, C_v1/temps_ext, label="$\Theta_D = 50$ K")
+ax2.plot(temps_ext ** 2, C_v2/temps_ext, label="$\Theta_D = 750$ K")
+ax2.set_title("Plot of $\\frac{C}{T}$ vs. T$^{2}$")
+ax2.set_xlabel(" T$^{2}$")
+ax2.set_ylabel("$\\frac{C}{T}$ ")
+ax2.legend()
+
 plt.show()
